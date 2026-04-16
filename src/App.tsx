@@ -1,5 +1,7 @@
 import About from './components/About'
+import GreenPaperAudit from './components/GreenPaperAudit'
 import { Header } from './components/Header'
+import WhatWeDo from './components/WhatWeDo'
 import { Hero } from './pages/Hero'
 
 const App = () => {
@@ -12,9 +14,11 @@ const App = () => {
         <div className="relative z-10 mx-auto w-full max-w-[1920px] px-4 pb-8 sm:px-6 sm:pb-10 md:px-8 lg:px-12 lg:pb-12 xl:px-16 2xl:px-50">
           <Hero />
         </div>
-        <div className="relative z-10 mx-auto w-full max-w-[1920px] px-4 pb-8 sm:px-6 sm:pb-10 md:px-8 lg:px-12 lg:pb-12 xl:px-16 2xl:px-1">
-        <About />
+        <div className="relative z-10 mx-auto w-full max-w-[1920px] px-4  sm:px-6  md:px-8 lg:px-12  xl:px-16 2xl:px-1">
+          <About />
         </div>
+        <WhatWeDo />
+        <GreenPaperAudit />
       </main>
     </div>
   )

@@ -34,7 +34,7 @@ export function Hero() {
           <a className="btn-hero-fill" href="#services">
             Our Service
           </a>
-          <a className="btn-hero-ghost" href="#green-paper">
+          <a className="btn-hero-ghost" href="#documents">
             Green Paper
           </a>
         </div>
