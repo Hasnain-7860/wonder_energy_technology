@@ -21,7 +21,7 @@ export function PrivateSaleCard() {
 
   return (
     <aside
-      className="box-border relative z-10 mx-auto mt-8 flex h-auto min-h-0 w-full max-w-[537px] flex-col overflow-y-auto rounded-[20px] border border-[rgba(242,242,254,0.18)] bg-[rgba(242,242,254,0.1)] px-5 pb-5 pt-7 backdrop-blur-[3.5px] [box-shadow:0_24px_60px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.06)] sm:px-7 sm:pt-8 lg:absolute lg:mx-0 lg:mt-0 lg:left-[52.2%] lg:top-[1.4%] lg:h-[671px] lg:w-[537px] lg:max-w-none"
+      className="box-border relative z-10 mx-auto mt-6 flex h-auto min-h-0 w-full max-w-[537px] flex-col overflow-y-auto rounded-[20px] border border-[rgba(242,242,254,0.18)] bg-[rgba(242,242,254,0.1)] px-4 pb-5 pt-6 backdrop-blur-[3.5px] [box-shadow:0_24px_60px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.06)] sm:mt-8 sm:px-7 sm:pt-8 lg:absolute lg:mt-0 lg:left-auto lg:right-0 lg:top-0 lg:min-h-[560px] lg:max-h-[min(671px,calc(100vh-5rem))] lg:w-[min(537px,calc(100%-1.5rem))] lg:max-w-none lg:shrink-0"
       aria-labelledby="sale-heading"
     >
       <h2
@@ -34,8 +34,8 @@ export function PrivateSaleCard() {
         <img src={Logo} alt="Logo" className="h-[52px] w-[52px] rounded-full" />
       </div>
 
-      <div className="font-inter mb-1 text-center text-[24px] text-[rgba(244,254,255,0.9)]">
-        <span>USDT Raised: 10,000/500,000</span>
+      <div className="font-inter mb-1 px-1 text-center text-[15px] leading-snug text-[rgba(244,254,255,0.9)] sm:text-[19px] md:text-[22px] lg:text-[24px]">
+        <span className="inline-block max-w-full">USDT Raised: 10,000/500,000</span>
       </div>
       <div
         className="mb-6 h-3 overflow-hidden rounded-full bg-[rgba(152,159,94,0.35)]"
@@ -50,8 +50,8 @@ export function PrivateSaleCard() {
         />
       </div>
 
-      <div className="font-crypto relative mb-6 text-center text-[25px] tracking-[0.06em] before:absolute before:left-0 before:right-[58%] before:top-1/2 before:z-0 before:h-px before:bg-[rgba(95,251,241,0.55)] after:absolute after:left-[58%] after:right-0 after:top-1/2 after:z-0 after:h-px after:bg-[rgba(95,251,241,0.55)]">
-        <span className="relative z-10 px-3 text-[#d8f5ff]">
+      <div className="font-crypto relative mb-6 px-2 text-center text-[16px] tracking-[0.05em] before:absolute before:left-0 before:right-[58%] before:top-1/2 before:z-0 before:h-px before:bg-[rgba(95,251,241,0.55)] after:absolute after:left-[58%] after:right-0 after:top-1/2 after:z-0 after:h-px after:bg-[rgba(95,251,241,0.55)] sm:text-[21px] sm:tracking-[0.06em] lg:text-[25px]">
+        <span className="relative z-10 block px-2 text-[#d8f5ff] sm:inline sm:px-3">
           1 WTE = 0.25 USDT
         </span>
       </div>

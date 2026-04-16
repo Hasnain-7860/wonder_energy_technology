@@ -1,13 +1,16 @@
 type PageBackgroundProps = {
   textureUrl: string
+  scope?: 'viewport' | 'section'
 }
 
-export function PageBackground({ textureUrl }: PageBackgroundProps) {
+export function PageBackground({ textureUrl, scope = 'section' }: PageBackgroundProps) {
+  const positionClass =
+    scope === 'viewport'
+      ? 'pointer-events-none fixed inset-0 top-[-6px] z-0 min-h-[100dvh] w-full overflow-hidden'
+      : 'pointer-events-none absolute inset-0 z-0 min-h-full w-full overflow-hidden'
+
   return (
-    <div
-      className="pointer-events-none fixed inset-0 top-[-6px] z-0 min-h-[100dvh] w-full overflow-hidden"
-      aria-hidden
-    >
+    <div className={positionClass} aria-hidden>
       <div className="absolute inset-0 bg-black" />
       <div className="absolute -inset-[10%] bg-white opacity-[0.02]" />
       <div

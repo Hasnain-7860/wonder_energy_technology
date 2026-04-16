@@ -1,20 +1,21 @@
-import backgroundArt from './assets/background.png'
-import { PageBackground } from './components/PageBackground'
+import About from './components/About'
 import { Header } from './components/Header'
 import { Hero } from './pages/Hero'
 
 const App = () => {
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-black text-[#f4feff]">
-      <PageBackground textureUrl={backgroundArt} />
-
-      <div className="relative z-10 mx-auto max-w-[1440px] px-5 pt-5 pb-14 sm:px-6 sm:pt-6 lg:px-10 lg:pt-7">
-        <Header />
-
-        <main id="top">
+    <div id="top" className="relative min-h-screen overflow-x-clip bg-black text-[#f4feff]">
+      <main>
+        <div className="relative z-10 mx-auto w-full max-w-[1920px] px-4 pt-4 pb-8 sm:px-6 sm:pt-5 sm:pb-10 md:px-8 lg:px-12 lg:pt-6 lg:pb-12 xl:px-16 2xl:px-35">
+          <Header />
+        </div>
+        <div className="relative z-10 mx-auto w-full max-w-[1920px] px-4 pb-8 sm:px-6 sm:pb-10 md:px-8 lg:px-12 lg:pb-12 xl:px-16 2xl:px-50">
           <Hero />
-        </main>
-      </div>
+        </div>
+        <div className="relative z-10 mx-auto w-full max-w-[1920px] px-4 pb-8 sm:px-6 sm:pb-10 md:px-8 lg:px-12 lg:pb-12 xl:px-16 2xl:px-1">
+        <About />
+        </div>
+      </main>
     </div>
   )
 }
