@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import type { CSSProperties } from 'react'
 import nftImg from '../assets/NFTT.png'
-import Bit from '../assets/BIT.png'
-import Tracking from '../assets/TRACKING.png'
+import Bit from '../assets/Bit.png'
+import Tracking from '../assets/tracking.png'
 
 
 
