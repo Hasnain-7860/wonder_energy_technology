@@ -6,6 +6,7 @@ const NAV_LINKS = [
   { href: '#home', label: 'Home' },
   { href: '#about-us', label: 'About us' },
   { href: '#documents', label: 'Documents' },
+  { href: '#projects', label: 'Projects' },
   { href: '#roadmap', label: 'Roadmap' },
   { href: '#faqs', label: 'FAQs' },
   { href: '#contact', label: 'Contact' },
@@ -58,7 +59,7 @@ export function Header() {
 
   return (
     <header className="mb-9 border-[rgba(95,251,241,0.12)] pb-4 lg:mb-10 lg:pb-5">
-      <div className="flex items-center justify-between gap-3 sm:gap-4">
+      <div className="flex items-center justify-between gap-3 sm:gap-10">
         <a
           href="#top"
           className="flex min-w-0 shrink items-center gap-2.5 text-inherit no-underline lg:gap-3"
@@ -67,9 +68,9 @@ export function Header() {
           <img
             src={Logo}
             alt="Wonder Energy Technology"
-            className="h-9 w-9 shrink-0 rounded-full object-cover sm:h-10 sm:w-10"
+            className="h-9 w-9 shrink-0 rounded-full object-cover sm:h-[80px]  sm:w-[80px]"
           />
-          <span className="font-crypto font-twobit-only min-w-0 text-[11px] font-bold uppercase leading-tight tracking-[0.14em] sm:text-[13px] sm:tracking-[0.18em]">
+          <span className="font-crypto font-twobit-only min-w-0 text-[11px] font-bold uppercase leading-tight tracking-[0.14em] sm:text-[20px] sm:tracking-[0.18em]">
             WONDER ENERGY TECHNOLOGY
           </span>
         </a>

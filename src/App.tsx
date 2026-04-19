@@ -1,6 +1,12 @@
 import About from './components/About'
+import Faq from './components/Faq'
+import Footer from './components/Footer'
 import GreenPaperAudit from './components/GreenPaperAudit'
 import { Header } from './components/Header'
+import Projects from './components/Projects'
+import Roadmap from './components/Roadmap'
+import Tokenomics from './components/Tokenomics'
+import TrackerStrip from './components/TrackerStrip'
 import WhatWeDo from './components/WhatWeDo'
 import { Hero } from './pages/Hero'
 
@@ -19,6 +25,24 @@ const App = () => {
         </div>
         <WhatWeDo />
         <GreenPaperAudit />
+       <div style={{background: "linear-gradient(90deg, #1E1E1E 0%, #1E1E1E 8%, #0F2D2F 22%, #163D3E 40%, #163D3E 50%, #163D3E 60%, #0F2D2F 78%, #1E1E1E 92%, #1E1E1E 100%)" }} >
+        <Tokenomics />
+         <TrackerStrip />
+        <Roadmap />
+        <Projects />
+        </div>
+        <div
+  style={{
+    background: `
+      radial-gradient(circle at center, #163D3E 0%, #0F2D2F 10%, #1E1E1E 80%),
+      linear-gradient(180deg, transparent 10%, #1E1E1E 100%)
+    `
+  }}
+>
+        <Faq />
+        </div>
+        
+        <Footer />
       </main>
     </div>
   )

@@ -66,13 +66,13 @@ export default function WhatWeDo() {
   return (
     <section
       id="services"
-      className="relative z-10 mx-auto w-full scroll-mt-24 overflow-hidden px-4 py-14 text-white sm:px-6 sm:py-16 md:px-8 lg:px-12 lg:py-35 xl:px-16"
+      className="relative mx-auto min-h-0 w-full scroll-mt-24 overflow-hidden py-10 text-white sm:py-14 lg:min-h-[787.5px] lg:py-16"
       style={{
         background:
-          'radial-gradient(ellipse 85% 75% at 50% 42%, #152f30 0%, #0f2426 35%, #0b1818 62%, #050a0a 100%)',
+          'linear-gradient(90deg, #000000 0%, #020303 8%, #050A0A 14%, #0B1818 20%, #122A2B 38%, #152F30 50%, #122A2B 62%, #0B1818 80%, #050A0A 86%, #020303 92%, #000000 100%)',
       }}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.28)_0%,transparent_22%,transparent_78%,rgba(0,0,0,0.28)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.52)_0%,rgba(0,0,0,0.22)_14%,transparent_30%,transparent_70%,rgba(0,0,0,0.22)_86%,rgba(0,0,0,0.52)_100%)]" />
 
       <div className="relative z-10 mx-auto w-full max-w-[1200px]">
         <header className="mb-12 text-center sm:mb-14 lg:mb-16">
@@ -120,6 +120,7 @@ export default function WhatWeDo() {
             )
           })}
         </div>
+        
       </div>
     </section>
   )
