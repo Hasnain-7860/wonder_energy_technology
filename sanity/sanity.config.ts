@@ -3,12 +3,16 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 
+const projectId =
+  process.env.SANITY_STUDIO_PROJECT_ID ?? process.env.VITE_SANITY_PROJECT_ID ?? 'skl3obvi'
+const dataset = process.env.SANITY_STUDIO_DATASET ?? process.env.VITE_SANITY_DATASET ?? 'production'
+
 export default defineConfig({
   name: 'default',
   title: 'sanityy',
 
-  projectId: 'skl3obvi',
-  dataset: 'production',
+  projectId,
+  dataset,
 
   plugins: [structureTool(), visionTool()],
 

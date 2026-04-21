@@ -2,10 +2,6 @@ import type { JSX } from 'react'
 import { useEffect, useState } from 'react'
 import footerArt from '../assets/footer.svg'
 import { client } from '../sanityClient'
-import { PiTiktokLogoThin } from "react-icons/pi"
-import { FiYoutube } from "react-icons/fi"
-import { FaSnapchatGhost, FaRedditAlien, FaFacebookF, FaInstagram, FaGithub } from "react-icons/fa"
-import { FaXTwitter } from "react-icons/fa6"
 
 const fontJakarta = "font-['Plus_Jakarta_Sans',ui-sans-serif,system-ui,sans-serif]"
 

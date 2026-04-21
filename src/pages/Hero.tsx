@@ -34,7 +34,7 @@ export function Hero() {
           revolution, ride the innovation wave with WTE.
         </p>
 
-        <div className="mb-8 flex flex-wrap items-start gap-2.5 sm:mb-10 lg:mb-12">
+        <div className="mb-8 font-twobit-only flex flex-wrap items-start gap-2.5 sm:mb-10 lg:mb-12">
           <a className="" href="#services">
             Our Service
           </a>

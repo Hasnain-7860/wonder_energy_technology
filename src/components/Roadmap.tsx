@@ -24,12 +24,16 @@ const ROADMAP_QUERY = `*[_type == "roadmapSettings"] | order(_updatedAt desc) {
   }
 }`
 
-function isValidPhaseRow(row: RoadmapPhaseRow | null | undefined): row is RoadmapPhaseRow {
-  if (!row) return false
-  if (typeof row.num !== 'number' || !Number.isFinite(row.num)) return false
-  if (typeof row.title !== 'string' || row.title.trim().length === 0) return false
-  if (!Array.isArray(row.items) || row.items.length === 0) return false
-  return row.items.every((line) => typeof line === 'string' && line.trim().length > 0)
+function isValidPhaseRow(row: any): row is {
+  num: number
+  title: string
+  items: string[]
+} {
+  return (
+    typeof row?.num === 'number' &&
+    typeof row?.title === 'string' &&
+    Array.isArray(row?.items)
+  )
 }
 
 function mergePhasesFromDocuments(
@@ -43,9 +47,11 @@ function mergePhasesFromDocuments(
     if (!rows?.length) continue
     for (const row of rows) {
       if (!isValidPhaseRow(row)) continue
-      const num = Math.round(row.num)
-      const title = row.title.trim()
-      const items = row.items.map((line) => line.trim()).filter(Boolean)
+      const num = Number.isFinite(row.num) ? Math.round(row.num) : 0
+     const title = (row.title || '').trim()
+      const items = Array.isArray(row.items)
+  ? row.items.map((line) => line.trim()).filter(Boolean)
+  : []
       if (items.length === 0) continue
       const dedupeKey = `${num}\n${title}\n${items.join('\n')}`
       if (seen.has(dedupeKey)) continue
