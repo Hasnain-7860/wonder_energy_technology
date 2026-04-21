@@ -1,10 +1,70 @@
 import type { JSX } from 'react'
+import { useEffect, useState } from 'react'
 import footerArt from '../assets/footer.svg'
+import { client } from '../sanityClient'
+import { PiTiktokLogoThin } from "react-icons/pi"
+import { FiYoutube } from "react-icons/fi"
+import { FaSnapchatGhost, FaRedditAlien, FaFacebookF, FaInstagram, FaGithub } from "react-icons/fa"
+import { FaXTwitter } from "react-icons/fa6"
 
 const fontJakarta = "font-['Plus_Jakarta_Sans',ui-sans-serif,system-ui,sans-serif]"
 
 const TELEGRAM_HREF = 'https://t.me/'
 const X_HREF = 'https://x.com/'
+const FOOTER_SOCIAL_QUERY = `*[_type == "footerSettings"] | order(_updatedAt desc) {
+  socialLinks[]{
+    _key,
+    platform,
+    url
+  }
+}`
+
+const FOOTER_SOCIAL_PLATFORMS = [
+  'tiktok',
+  'snapchat',
+  'reddit',
+  'facebook',
+  'x',
+  'instagram',
+  'github',
+  'youtube',
+] as const
+
+type FooterSocialPlatform = (typeof FOOTER_SOCIAL_PLATFORMS)[number]
+
+const FOOTER_PLATFORM_SET = new Set<string>(FOOTER_SOCIAL_PLATFORMS)
+
+type FooterSocialRow = {
+  _key?: string
+  platform: string
+  url: string
+}
+
+function isValidSocialRow(row: FooterSocialRow | null | undefined): row is FooterSocialRow {
+  if (!row?.platform || !FOOTER_PLATFORM_SET.has(row.platform)) return false
+  const url = row.url?.trim() ?? ''
+  return url.length > 0
+}
+function mergeSocialLinksFromDocuments(
+  docs: { socialLinks?: FooterSocialRow[] | null }[] | null | undefined,
+): FooterSocialRow[] {
+  if (!docs?.length) return []
+  const out: FooterSocialRow[] = []
+  const seen = new Set<string>()
+  for (const doc of docs) {
+    const rows = doc?.socialLinks
+    if (!rows?.length) continue
+    for (const row of rows) {
+      if (!isValidSocialRow(row)) continue
+      const url = row.url.trim()
+      const dedupeKey = `${row.platform}\n${url}`
+      if (seen.has(dedupeKey)) continue
+      seen.add(dedupeKey)
+      out.push({ _key: row._key, platform: row.platform, url })
+    }
+  }
+  return out
+}
 
 function IconTikTok({ className }: { className?: string }) {
   return (
@@ -74,24 +134,47 @@ function IconYouTube({ className }: { className?: string }) {
   )
 }
 
-type SocialItem = {
+const SOCIAL_ROWS: {
+  platform: FooterSocialPlatform
   name: string
-  href: string
   Icon: (props: { className?: string }) => JSX.Element
-}
-
-const SOCIALS: SocialItem[] = [
-  { name: 'TikTok', href: 'https://www.tiktok.com/', Icon: IconTikTok },
-  { name: 'Snapchat', href: 'https://www.snapchat.com/', Icon: IconSnapchat },
-  { name: 'Reddit', href: 'https://www.reddit.com/', Icon: IconReddit },
-  { name: 'Facebook', href: 'https://www.facebook.com/', Icon: IconFacebook },
-  { name: 'X', href: X_HREF, Icon: IconX },
-  { name: 'Instagram', href: 'https://www.instagram.com/', Icon: IconInstagram },
-  { name: 'GitHub', href: 'https://github.com/', Icon: IconGitHub },
-  { name: 'YouTube', href: 'https://www.youtube.com/', Icon: IconYouTube },
+}[] = [
+  { platform: 'tiktok', name: 'TikTok', Icon: IconTikTok },
+  { platform: 'snapchat', name: 'Snapchat', Icon: IconSnapchat },
+  { platform: 'reddit', name: 'Reddit', Icon: IconReddit },
+  { platform: 'facebook', name: 'Facebook', Icon: IconFacebook },
+  { platform: 'x', name: 'X', Icon: IconX },
+  { platform: 'instagram', name: 'Instagram', Icon: IconInstagram },
+  { platform: 'github', name: 'GitHub', Icon: IconGitHub },
+  { platform: 'youtube', name: 'YouTube', Icon: IconYouTube },
 ]
 
 export default function Footer() {
+  const [socialLinks, setSocialLinks] = useState<FooterSocialRow[]>([])
+
+  useEffect(() => {
+    let cancelled = false
+
+    client
+      .fetch<{ socialLinks?: FooterSocialRow[] | null }[]>(FOOTER_SOCIAL_QUERY, {}, { useCdn: false })
+      .then((docs) => {
+        if (cancelled) return
+        setSocialLinks(mergeSocialLinksFromDocuments(docs))
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return
+        if (import.meta.env.DEV) {
+          console.error('[Footer] Sanity fetch failed:', err)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const showSocialNav = socialLinks.length > 0
+
   return (
     <footer
       id="contact"
@@ -137,23 +220,31 @@ export default function Footer() {
           </div>
         </div>
 
-        <nav
-          className="mx-auto mt-12 flex max-w-[1420px] flex-wrap justify-center gap-3 sm:mt-14 sm:gap-4"
-          aria-label="Social links"
-        >
-          {SOCIALS.map(({ name, href, Icon }) => (
-            <a
-              key={name}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex h-11 w-11 items-center justify-center rounded-[10px] border border-white/[0.1] bg-[rgba(12,16,18,0.72)] text-[#c5f4f6] transition-colors hover:border-[#4FD1C5] hover:bg-[#4FD1C5] hover:text-white sm:h-12 sm:w-12"
-              aria-label={name}
-            >
-              <Icon className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
-            </a>
-          ))}
-        </nav>
+        {showSocialNav ? (
+          <nav
+            className="mx-auto mt-12 flex max-w-[1420px] flex-wrap justify-center gap-3 sm:mt-14 sm:gap-4"
+            aria-label="Social links"
+          >
+            {socialLinks.map((row, index) => {
+              const meta = SOCIAL_ROWS.find((r) => r.platform === row.platform)
+              if (!meta) return null
+              const { name, Icon } = meta
+              const href = row.url.trim()
+              return (
+                <a
+                  key={row._key ?? `${row.platform}-${index}`}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-11 w-11 items-center justify-center rounded-[10px] border border-white/[0.1] bg-[rgba(12,16,18,0.72)] text-[#c5f4f6] transition-colors hover:border-[#4FD1C5] hover:bg-[#4FD1C5] hover:text-white sm:h-12 sm:w-12"
+                  aria-label={name}
+                >
+                  <Icon className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
+                </a>
+              )
+            })}
+          </nav>
+        ) : null}
 
         <div className="mx-auto mt-12 flex max-w-[1420px] flex-col items-center border-t border-white/[0.12] pt-8 text-center sm:mt-14 sm:pt-9">
           <p
