@@ -1,4 +1,6 @@
-import { FiCheck } from "react-icons/fi"
+import { useEffect, useState } from 'react'
+import { FiCheck } from 'react-icons/fi'
+import { client } from '../sanityClient'
 
 type Phase = {
   num: number
@@ -6,58 +8,54 @@ type Phase = {
   items: string[]
 }
 
-const PHASES: Phase[] = [
-  {
-    num: 1,
-    title: 'START WTE',
-    items: [
-      'Private sale',
-      'Listing',
-      'WTE NFT World beta version WTE',
-      'staking platform Beta version',
-    ],
-  },
-  
-  {
-    num: 2,
-    title: 'WTE',
-    items: ['Profit sharing event', 'Tracking wallet Dapps Beta version'],
-  },
-  {
-    num: 3,
-    title: 'WTE',
-    items: [
-      'Cex Platform Beta version',
-      'WTE NFT World Alpha version',
-      'WTE staking platform Alpha Version',
-    ],
-  },
-  {
-    num: 4,
-    title: 'WTE',
-    items: ['Tracking wallets Alpha Version', 'CEX platform alpha Version'],
-  },
-  {
-    num: 5,
-    title: 'WTE',
-    items: [
-      'WTE NFT world',
-      'WTE staking platform full version',
-      'Mobile apps',
-    ],
-  },
-  {
-    num: 6,
-    title: 'WTE',
-    items: [
-      'WTE Tracking wallets',
-      'CEX platform Full versions',
-      'Mobile apps',
-    ],
-  },
+type RoadmapPhaseRow = {
+  _key?: string
+  num?: number
+  title?: string
+  items?: string[]
+}
 
- 
-]
+const ROADMAP_QUERY = `*[_type == "roadmapSettings"] | order(_updatedAt desc) {
+  phases[]{
+    _key,
+    num,
+    title,
+    items
+  }
+}`
+
+function isValidPhaseRow(row: RoadmapPhaseRow | null | undefined): row is RoadmapPhaseRow {
+  if (!row) return false
+  if (typeof row.num !== 'number' || !Number.isFinite(row.num)) return false
+  if (typeof row.title !== 'string' || row.title.trim().length === 0) return false
+  if (!Array.isArray(row.items) || row.items.length === 0) return false
+  return row.items.every((line) => typeof line === 'string' && line.trim().length > 0)
+}
+
+function mergePhasesFromDocuments(
+  docs: { phases?: RoadmapPhaseRow[] | null }[] | null | undefined,
+): Phase[] {
+  if (!docs?.length) return []
+  const out: Phase[] = []
+  const seen = new Set<string>()
+  for (const doc of docs) {
+    const rows = doc?.phases
+    if (!rows?.length) continue
+    for (const row of rows) {
+      if (!isValidPhaseRow(row)) continue
+      const num = Math.round(row.num)
+      const title = row.title.trim()
+      const items = row.items.map((line) => line.trim()).filter(Boolean)
+      if (items.length === 0) continue
+      const dedupeKey = `${num}\n${title}\n${items.join('\n')}`
+      if (seen.has(dedupeKey)) continue
+      seen.add(dedupeKey)
+      out.push({ num, title, items })
+    }
+  }
+  out.sort((a, b) => a.num - b.num)
+  return out
+}
 
 
 
@@ -92,41 +90,38 @@ function RoadmapConnector({ rows }: { rows: number }) {
 }
 function PhaseCard({ phase, isTopRow }: { phase: Phase; isTopRow: boolean }) {
   return (
-<article className={`relative z-10 w-full text-left md:max-w-none 
-  ${isTopRow ? "items-start" : "items-end"}`}>
+<article className={`relative z-10 w-full text-center md:max-w-none md:text-left`}>
        <p
   className={`mb-1.5 font-inter text-[11px] font-semibold uppercase tracking-[0.26em] text-[#7ee8ec] sm:text-[12px] sm:tracking-[0.3em]
-  ${isTopRow ? "text-left" : "text-left md:mt-15"}`}
+  ${isTopRow ? "text-center md:text-left" : "text-center md:text-left md:mt-10"}`}
   style={{ fontFamily: "'Acme', ui-sans-serif, system-ui, sans-serif" }}
 >
   Phase {phase.num}
 </p>
 
 <h3
-  className={`font-twobit-only text-[clamp(0.95rem,2.4vw,1.2rem)] font-normal leading-snug tracking-[0.12em] text-white sm:tracking-[0.14em]
+  className={`font-twobit-only text-[clamp(0.95rem,3.8vw,1.2rem)] font-normal leading-snug tracking-[0.12em] text-white sm:tracking-[0.14em]
   ${isTopRow ? "" : "md:mb-10"}`}
 >
   {phase.title}
 </h3>
 
-        <div className="mt-4 flex items-stretch gap-3 sm:mt-5 sm:gap-4">
-         <div className="flex w-10 shrink-0 flex-col items-center sm:w-11">
+        <div className="mt-3 flex items-stretch justify-center gap-2.5 sm:mt-5 sm:gap-4 md:justify-start">
+         <div className="flex w-8 shrink-0 flex-col items-center sm:w-11">
   <div
-    className={`relative z-20 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#5CE1E6] sm:h-[20px] sm:w-[20px]
-    ${isTopRow ? "" : "order-2 top-[-225px]"}`}
+    className={`relative z-20 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#5CE1E6] sm:h-[20px] sm:w-[20px]
+    ${isTopRow ? "" : "md:order-2 md:top-[-225px]"}`}
   >
-  <FiCheck className=" text-sm sm:text-base " />
+  <FiCheck className="text-xs sm:text-base" />
   </div>
-
-  {/* Line */}
   <div
-    className={`w-[2px] flex-1 min-h-[4.5rem] rounded-full bg-[#5CE1E6]
-    ${isTopRow ? "mt-2" : "mb-2 order-1"}`}
+    className={`w-[2px] flex-1 min-h-[3rem] rounded-full bg-[#5CE1E6] sm:min-h-[4.5rem]
+    ${isTopRow ? "mt-1.5 sm:mt-2" : "mb-1.5 md:mb-2 md:order-1"}`}
   />
 
 </div>
-                      <ul className={`font-inter list-disc space-y-1.5 pl-5 text-[12px] text-white/95
-  ${isTopRow ? "mt-10" : "mb-10"}`}>
+                      <ul className={`font-inter list-disc space-y-1.5 pl-4 text-left text-[11px] leading-relaxed text-white/95 sm:pl-5 sm:text-[12px]
+  ${isTopRow ? "mt-2 sm:mt-10" : "mb-0 md:mb-10"}`}>
             {phase.items.map((line) => (
               <li key={line} className="pl-0.5">
                 {line}
@@ -139,12 +134,40 @@ function PhaseCard({ phase, isTopRow }: { phase: Phase; isTopRow: boolean }) {
 }
 
 export default function Roadmap() {
+  const [phases, setPhases] = useState<Phase[]>([])
+
+  useEffect(() => {
+    let cancelled = false
+
+    client
+      .fetch<{ phases?: RoadmapPhaseRow[] | null }[]>(ROADMAP_QUERY, {}, { useCdn: false })
+      .then((docs) => {
+        if (cancelled) return
+        const fromSanity = mergePhasesFromDocuments(docs)
+        setPhases(fromSanity)
+      })
+      .catch((err: unknown) => {
+        if (cancelled) return
+        if (import.meta.env.DEV) {
+          console.error('[Roadmap] Sanity fetch failed:', err)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   const chunkSize = 3
 
 const rows = []
-for (let i = 0; i < PHASES.length; i += chunkSize) {
-  rows.push(PHASES.slice(i, i + chunkSize))
+for (let i = 0; i < phases.length; i += chunkSize) {
+  rows.push(phases.slice(i, i + chunkSize))
 }
+
+  if (phases.length === 0) {
+    return null
+  }
   return (
     <section
       id="roadmap"
@@ -154,7 +177,7 @@ for (let i = 0; i < PHASES.length; i += chunkSize) {
     >
       {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.18)_0%,transparent_24%,transparent_76%,rgba(0,0,0,0.18)_100%)]" /> */}
 
-      <div className="relative z-10 mx-auto w-full max-w-[1200px] ">
+      <div className="relative z-10 mx-auto w-full max-w-[1200px] px-1 sm:px-0">
         <header className="mb-12 text-center sm:mb-14 lg:mb-16">
           <p
             className="mb-2 text-[13px] font-medium uppercase tracking-[0.28em] text-[#7ee8ec] sm:text-[14px]"
@@ -170,13 +193,13 @@ for (let i = 0; i < PHASES.length; i += chunkSize) {
           </h2>
         </header>
 
-      <div className="relative z-10 mx-auto py-20">
+      <div className="relative z-10 mx-auto py-10 sm:py-14 md:py-20">
   <RoadmapConnector rows={rows.length} />
 
   {rows.map((row, rowIndex) => (
     <div
       key={rowIndex}
-      className="grid grid-cols-1 md:grid-cols-3 gap-14 mb-20"
+      className="grid grid-cols-1 gap-8 mb-8 sm:gap-10 sm:mb-10 md:grid-cols-3 md:gap-14 md:mb-15"
     >
       {row.map((phase) => (
         <PhaseCard
