@@ -19,32 +19,7 @@ export function PrivateSaleCard() {
 
 const [payWith, setPayWith] = useState<'eth' | 'usdt'>('eth')
   const [bnbAmount, setBnbAmount] = useState('0.0')
-  const [payAmount, setPayAmount] = useState('')
-const [wteAmount, setWteAmount] = useState('')
-const RATE_USDT = 5;       // 1 USDT = 5 WTE
-const RATE_ETH = 10000;   // 1 ETH = 10,000 WTE
-const handlePayChange = (value: string) => {
-  setPayAmount(value);
-
-  const amount = Number(value || 0);
-
-  if (payWith === "usdt") {
-    setWteAmount((amount * RATE_USDT).toFixed(2));
-  } else {
-    setWteAmount((amount * RATE_ETH).toFixed(2));
-  }
-};
-const handleWteChange = (value: string) => {
-  setWteAmount(value);
-
-  const amount = Number(value || 0);
-
-  if (payWith === "usdt") {
-    setPayAmount((amount / RATE_USDT).toFixed(4));
-  } else {
-    setPayAmount((amount / RATE_ETH).toFixed(6));
-  }
-};
+  
 
 async function handleBuy() {
   try {
@@ -69,9 +44,9 @@ const calculateWTE = () => {
   const amount = Number(bnbAmount || 0);
 
   if (payWith === "usdt") {
-    return amount * 5; // 1 USDT = 5 WTE
+    return amount * 5; 
   } else {
-    return amount * 10000; // 1 ETH = 10,000 WTE
+    return amount * 10000; 
   }
 };
 

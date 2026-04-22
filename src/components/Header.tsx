@@ -41,7 +41,7 @@ function MenuIcon({ open }: { open: boolean }) {
 }
 
 export function Header() {
-   const { isConnected, loginHandler, logout } = useWeb3();
+   const { isConnected, logout } = useWeb3();
   const [menuOpen, setMenuOpen] = useState(false)
   const panelId = useId()
 
