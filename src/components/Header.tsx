@@ -1,6 +1,9 @@
 import { useEffect, useId, useState } from 'react'
 import { btnPrimary } from '../constants/buttonClasses'
 import Logo from '../assets/logo.png'
+import { useWeb3 } from './Web3Context'
+import { FiPower } from "react-icons/fi";
+
 
 const NAV_LINKS = [
   { href: '#home', label: 'Home' },
@@ -13,6 +16,7 @@ const NAV_LINKS = [
 ] as const
 
 function MenuIcon({ open }: { open: boolean }) {
+  
   return (
     <svg
       className="h-6 w-6"
@@ -37,6 +41,7 @@ function MenuIcon({ open }: { open: boolean }) {
 }
 
 export function Header() {
+   const { isConnected, loginHandler, logout } = useWeb3();
   const [menuOpen, setMenuOpen] = useState(false)
   const panelId = useId()
 
@@ -96,6 +101,16 @@ export function Header() {
             Telegram
           </a>
         </div>
+ {isConnected && (
+  <button
+    onClick={logout}
+    
+    title="Disconnect Wallet flex min-w-0 shrink items-center gap-2.5 text-inherit no-underline lg:gap-3"
+     className="flex w-10 h-10 border rounded-2xl shrink items-center justify-center text-center gap-2.5 text-inherit no-underline lg:gap-3 bg-red-500/10  text-red-400  hover:bg-red-500/20 hover:scale-110 transition-all duration-200"
+  >
+    <FiPower className="w-5 h-5" />
+  </button>
+)}
 
         <button
           type="button"
@@ -128,17 +143,41 @@ export function Header() {
             menuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="flex items-center justify-between border-b border-[rgba(95,251,241,0.12)] px-4 py-3">
-            <span className="font-twobit-only text-[13px] tracking-[0.12em] text-white/80">Menu</span>
-            <button
-              type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-md text-white/90 hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#5ffbf1]"
-              aria-label="Close menu"
-              onClick={() => setMenuOpen(false)}
-            >
-              <MenuIcon open />
-            </button>
-          </div>
+         <div className="flex items-center justify-between border-b border-[rgba(95,251,241,0.12)] px-4 py-3">
+
+  <span className="font-twobit-only text-[13px] tracking-[0.12em] text-white/80">
+    Menu
+  </span>
+  {isConnected && (
+  <button     className="absolute top-4 right-4 text-[10px] px-2 py-1 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30"
+ onClick={logout}>
+    Disconnect
+  </button>
+)}
+
+  <div className="flex items-center gap-2">
+    {isConnected && (
+      <button
+        onClick={logout}
+        className="flex items-center justify-center 
+        w-8 h-8 rounded-full 
+        bg-red-500/10 text-red-400 
+        hover:bg-red-500/20 transition"
+      >
+        <FiPower className="w-4 h-4" />
+      </button>
+    )}
+
+    <button
+      type="button"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-md text-white/90 hover:bg-white/5"
+      onClick={() => setMenuOpen(false)}
+    >
+      <MenuIcon open />
+    </button>
+
+  </div>
+</div>
           <nav className="font-inter flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-4" aria-label="Mobile primary">
             {NAV_LINKS.map(({ href, label }) => (
               <a
@@ -162,6 +201,43 @@ export function Header() {
               Telegram
             </a>
           </div>
+          <div className="flex items-center gap-2 sm:gap-3">
+
+  {isConnected && (
+    <button
+      onClick={logout}
+      className="flex items-center justify-center 
+      w-9 h-9 sm:w-10 sm:h-10 
+      rounded-full 
+      bg-red-500/10 text-red-400 
+      hover:bg-red-500/20 hover:scale-110 
+      transition-all duration-200"
+      title="Disconnect Wallet"
+    >
+      <FiPower className="w-4 h-4 sm:w-5 sm:h-5" />
+    </button>
+  )}
+
+  <div className="hidden lg:flex">
+    <a
+      className={`${btnPrimary} px-4 py-2 text-[13px] sm:px-5 sm:py-[10px] sm:text-[15px]`}
+      href="https://telegram.org"
+      target="_blank"
+      rel="noreferrer"
+    >
+      Telegram
+    </a>
+  </div>
+
+  <button
+    type="button"
+    className="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-lg border border-[rgba(95,251,241,0.25)] bg-[rgba(5,18,20,0.65)] text-white backdrop-blur-sm hover:border-[rgba(95,251,241,0.45)] hover:bg-[rgba(5,18,20,0.85)] lg:hidden"
+    onClick={() => setMenuOpen((v) => !v)}
+  >
+    <MenuIcon open={menuOpen} />
+  </button>
+
+</div>
         </div>
       </div>
     </header>

@@ -3,7 +3,10 @@ import { btnPrimary } from '../constants/buttonClasses'
 import Logo from '../assets/logo.png'
 import usdt from '../assets/usdt.svg'
 import { RiBnbFill } from "react-icons/ri";
-import { ethers } from "ethers"
+
+import { useWeb3 } from './Web3Context';
+import { buyWithETH, buyWithUSDT } from "../../utils/web3";
+
 
 declare global {
   interface Window {
@@ -12,8 +15,66 @@ declare global {
 }
 
 export function PrivateSaleCard() {
+  const { isConnected, loginHandler, logout } = useWeb3();
+
 const [payWith, setPayWith] = useState<'eth' | 'usdt'>('eth')
   const [bnbAmount, setBnbAmount] = useState('0.0')
+  const [payAmount, setPayAmount] = useState('')
+const [wteAmount, setWteAmount] = useState('')
+const RATE_USDT = 5;       // 1 USDT = 5 WTE
+const RATE_ETH = 10000;   // 1 ETH = 10,000 WTE
+const handlePayChange = (value: string) => {
+  setPayAmount(value);
+
+  const amount = Number(value || 0);
+
+  if (payWith === "usdt") {
+    setWteAmount((amount * RATE_USDT).toFixed(2));
+  } else {
+    setWteAmount((amount * RATE_ETH).toFixed(2));
+  }
+};
+const handleWteChange = (value: string) => {
+  setWteAmount(value);
+
+  const amount = Number(value || 0);
+
+  if (payWith === "usdt") {
+    setPayAmount((amount / RATE_USDT).toFixed(4));
+  } else {
+    setPayAmount((amount / RATE_ETH).toFixed(6));
+  }
+};
+
+async function handleBuy() {
+  try {
+    if (!bnbAmount || Number(bnbAmount) <= 0) {
+      alert("Enter valid amount");
+      return;
+    }
+
+    if (payWith === "eth") {
+      await buyWithETH(bnbAmount);
+    } else {
+      await buyWithUSDT(bnbAmount);
+    }
+
+    alert("✅ Purchase successful");
+  } catch (err) {
+    console.error(err);
+    alert("❌ Transaction failed");
+  }
+}
+const calculateWTE = () => {
+  const amount = Number(bnbAmount || 0);
+
+  if (payWith === "usdt") {
+    return amount * 5; // 1 USDT = 5 WTE
+  } else {
+    return amount * 10000; // 1 ETH = 10,000 WTE
+  }
+};
+
 
 
   const toggleBase =
@@ -123,19 +184,23 @@ const [payWith, setPayWith] = useState<'eth' | 'usdt'>('eth')
             <input
               className="font-inter w-full border-0 bg-transparent text-[15px] text-[#f4feff] outline-none"
               readOnly
-              value="0"
+              value={calculateWTE()}
             />
             <img src={Logo} alt="WTE" className="h-5 w-5 rounded-full" />
           </div>
         </div>
       </div>
+    
+{isConnected && (
+  <button     className="absolute top-4 right-4 text-[10px] px-2 py-1 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30"
+ onClick={logout}>
+    Disconnect
+  </button>
+)}
 
-    <button
-        type="button"
-        className={`${btnPrimary} font-inter mb-5 h-12 w-full rounded-[5px] py-0 text-[14px]`}
-      >
-        Connect Wallet
-      </button>
+<button className={`${btnPrimary} font-inter mb-5 h-12 w-full rounded-[5px] py-0 text-[14px]`} onClick={isConnected ? handleBuy : loginHandler}>
+  {isConnected ? "Buy Now" : "Connect Wallet"}
+</button>
 
       <div className="flex flex-col gap-1.5">
         <span className="font-inter text-[11px] text-[rgba(244,254,255,0.82)]">
