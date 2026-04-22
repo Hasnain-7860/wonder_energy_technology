@@ -16,7 +16,7 @@ export default function Tokenomics() {
         <h2 className="mb-10 text-center text-[40px] tracking-[0.2em] font-twobit-only">
           TOKENOMICS
         </h2>
-        <div className="relative flex items-center justify-center my-50 lg:my-60">
+        <div className="relative flex items-center justify-center my-0 lg:my-60">
 
           <TokenomicsWithLabels />
           <img

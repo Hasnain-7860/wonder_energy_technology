@@ -184,7 +184,7 @@ for (let i = 0; i < phases.length; i += chunkSize) {
       {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.18)_0%,transparent_24%,transparent_76%,rgba(0,0,0,0.18)_100%)]" /> */}
 
       <div className="relative z-10 mx-auto w-full max-w-[1200px] px-1 sm:px-0">
-        <header className="mb-12 text-center sm:mb-14 lg:mb-16">
+        <header className="mb-6 text-center sm:mb-12 lg:mb-16">
           <p
             className="mb-2 text-[13px] font-medium uppercase tracking-[0.28em] text-[#7ee8ec] sm:text-[14px]"
             style={{ fontFamily: "'Acme', ui-sans-serif, system-ui, sans-serif" }}
@@ -199,13 +199,13 @@ for (let i = 0; i < phases.length; i += chunkSize) {
           </h2>
         </header>
 
-      <div className="relative z-10 mx-auto py-10 sm:py-14 md:py-20">
+      <div className="relative z-10 mx-auto py-5 sm:py-10 md:py-20">
   <RoadmapConnector rows={rows.length} />
 
   {rows.map((row, rowIndex) => (
     <div
       key={rowIndex}
-      className="grid grid-cols-1 gap-8 mb-8 sm:gap-10 sm:mb-10 md:grid-cols-3 md:gap-14 md:mb-15"
+      className="mb-5 grid grid-cols-1 gap-5 last:mb-0 sm:mb-8 sm:gap-8 sm:last:mb-0 md:mb-12 md:grid-cols-3 md:gap-14 md:last:mb-0"
     >
       {row.map((phase) => (
         <PhaseCard

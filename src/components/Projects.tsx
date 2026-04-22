@@ -165,7 +165,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="relative w-full scroll-mt-24 overflow-hidden border-t-2 border-black py-12 text-white sm:py-16 lg:py-20"
+      className="relative w-full scroll-mt-24 overflow-hidden py-12 text-white sm:py-16 lg:py-20"
       // style={{background: "linear-gradient(90deg, #1E1E1E 0%, #1E1E1E 8%, #0F2D2F 22%, #163D3E 40%, #163D3E 50%, #163D3E 60%, #0F2D2F 78%, #1E1E1E 92%, #1E1E1E 100%)" }}
       aria-labelledby="projects-heading"
     >

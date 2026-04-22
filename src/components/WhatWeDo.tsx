@@ -76,7 +76,7 @@ export default function WhatWeDo() {
 
       <div className="relative z-10 mx-auto w-full max-w-[1200px]">
         <header className="mb-12 text-center sm:mb-14 lg:mb-16">
-          <h2 className="font-twobit-only text-[clamp(1.5rem,4.5vw,2.75rem)] font-normal tracking-[0.18em] text-white sm:tracking-[0.22em]">
+          <h2 className="font-twobit-only text-[40px] font-normal tracking-[0.18em] text-white sm:tracking-[0.22em]">
             WHAT WE DO
           </h2>
           <p className="font-['Plus_Jakarta_Sans',ui-sans-serif,system-ui,sans-serif] mx-auto mt-4 max-w-[640px] text-[15px] font-normal leading-relaxed text-white/85 sm:mt-5 sm:text-[17px] sm:leading-7 lg:text-[18px]">
@@ -93,25 +93,25 @@ export default function WhatWeDo() {
                 type="button"
                 onClick={() => setActive(item.id)}
                 aria-pressed={isActive}
-                className={`flex min-h-[280px] w-full max-w-[400px] flex-col items-center rounded-[20px] border px-6 py-8 text-center transition-[background,box-shadow,border-color,transform] outline-none focus-visible:ring-2 focus-visible:ring-[#5ce1e6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b1818] sm:min-h-[300px] sm:px-8 sm:py-10 md:max-w-none md:items-start md:text-left ${
+                className={`flex w-full flex-col items-center text-center transition-[background,box-shadow,border-color,transform] outline-none focus-visible:ring-2 focus-visible:ring-[#5ce1e6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b1818] md:items-start md:text-left ${
                   isActive
-                    ? 'border-transparent bg-gradient-to-b from-[#5ce1e6] to-[#2ad4e8] text-[#0a1416] shadow-[0_24px_55px_rgba(92,225,230,0.28)] md:-translate-y-0.5'
-                    : 'border-white/[0.12] bg-[rgba(18,26,28,0.92)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:border-white/20'
+                    ? 'max-w-[412px] gap-[30px] rounded-[10px] border border-transparent bg-[linear-gradient(180deg,#5CE1E6_0%,#35A0A4_100%)] px-[40px] py-[50px] text-[#0a1416] shadow-[0_18px_42px_rgba(53,160,164,0.22)] md:max-w-none min-h-[294px]'
+                    : 'max-w-[400px] min-h-[280px] rounded-[20px] border border-white/[0.12] bg-[rgba(18,26,28,0.92)] px-6 py-8 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] hover:border-white/20 sm:min-h-[300px] sm:px-8 sm:py-10 md:max-w-none'
                 }`}
               >
                 <div className="self-center md:self-start">
                   <ServiceIcon active={isActive} src={item.img} />
                 </div>
                 <h3
-                  className={`font-twobit-only mt-6 text-lg tracking-[0.2em] sm:text-xl ${
-                    isActive ? 'text-[#0a1416]' : 'text-white'
+                  className={`font-twobit-only text-lg tracking-[0.2em] sm:text-xl ${
+                    isActive ? 'text-[#0a1416]' : 'mt-6 text-white'
                   }`}
                 >
                   {item.title}
                 </h3>
                 <p
-                  className={`font-['Plus_Jakarta_Sans',ui-sans-serif,system-ui,sans-serif] mt-3 max-w-[280px] text-[14px] leading-snug sm:text-[15px] md:max-w-none ${
-                    isActive ? 'text-[#0d1f22]/88' : 'text-white/72'
+                  className={`font-['Plus_Jakarta_Sans',ui-sans-serif,system-ui,sans-serif] max-w-[280px] text-[14px] leading-snug sm:text-[15px] md:max-w-none ${
+                    isActive ? 'text-[#0d1f22]/88' : 'mt-3 text-white/72'
                   } ${item.id === 'tracking' ? 'whitespace-normal md:whitespace-nowrap' : ''}`}
                 >
                   {item.description}
