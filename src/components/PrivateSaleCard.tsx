@@ -1,19 +1,23 @@
 import { useState } from 'react'
 import { btnPrimary } from '../constants/buttonClasses'
 import Logo from '../assets/logo.png'
+import usdt from '../assets/usdt.svg'
+import { RiBnbFill } from "react-icons/ri";
+import { ethers } from "ethers"
 
+declare global {
+  interface Window {
+    ethereum?: any
+  }
+}
 
 export function PrivateSaleCard() {
-  const [payWith, setPayWith] = useState<'bnb' | 'usdt'>('bnb')
+const [payWith, setPayWith] = useState<'eth' | 'usdt'>('eth')
   const [bnbAmount, setBnbAmount] = useState('0.0')
-  const [referral] = useState('https://wonderenergy.technology/ref=0x8a3f...')
 
-  const copyReferral = () => {
-    void navigator.clipboard.writeText(referral)
-  }
 
   const toggleBase =
-    'font-twobit-only cursor-pointer rounded-[5px] border px-2 py-2.5 text-[11px] tracking-[0.05em] transition-[background,border-color,color] sm:text-[12px]'
+    'font-twobit-only cursor-pointer rounded-[5px] border px-2 py-2.5 text-[11px] tracking-[0.05em] transition-[background,border-color,color] sm:text-[12px] '
   const toggleOff =
     'border-[rgba(242,242,254,0.22)] bg-[rgba(242,242,254,0.06)] text-[rgba(244,254,255,0.9)]'
   const toggleOn =
@@ -30,15 +34,15 @@ export function PrivateSaleCard() {
       >
         $WTE Private Sale
       </h2>
-      <div className="mx-auto mb-4 flex h-[94px] w-[94px] items-center justify-center rounded-[8px] border border-[#2ad4e8] bg-[rgba(16,23,40,0.6)] backdrop-blur-[2px]">
-        <img src={Logo} alt="Logo" className="h-[52px] w-[52px] rounded-full" />
+      <div className="mx-auto mb-4 flex h-[95px] w-[95px] items-center justify-center rounded-[8px] border border-[#2ad4e8] bg-[rgba(16,23,40,0.6)] backdrop-blur-[2px]">
+        <img src={Logo} alt="Logo" className="h-[76px] w-[76px] rounded-full" />
       </div>
 
       <div className="font-inter mb-1 px-1 text-center text-[15px] leading-snug text-[rgba(244,254,255,0.9)] sm:text-[19px] md:text-[22px] lg:text-[24px]">
-        <span className="inline-block max-w-full">USDT Raised: 10,000/500,000</span>
+        <span className="inline-block max-w-full text-[16px]">USDT Raised: 10,000/500,000</span>
       </div>
       <div
-        className="mb-6 h-3 overflow-hidden rounded-full bg-[rgba(152,159,94,0.35)]"
+        className="mb-6 h-[17px] overflow-hidden rounded-[5px] bg-[rgba(152,159,94,0.35)]"
         role="progressbar"
         aria-valuenow={2}
         aria-valuemin={0}
@@ -50,33 +54,42 @@ export function PrivateSaleCard() {
         />
       </div>
 
-      <div className="font-crypto relative mb-6 px-2 text-center text-[16px] tracking-[0.05em] before:absolute before:left-0 before:right-[58%] before:top-1/2 before:z-0 before:h-px before:bg-[rgba(95,251,241,0.55)] after:absolute after:left-[58%] after:right-0 after:top-1/2 after:z-0 after:h-px after:bg-[rgba(95,251,241,0.55)] sm:text-[21px] sm:tracking-[0.06em] lg:text-[25px]">
-        <span className="relative z-10 block px-2 text-[#d8f5ff] sm:inline sm:px-3">
+      <div className="font-crypto relative mb-6 px-2 text-center text-[16px] tracking-[0.05em] before:absolute before:left-0 before:right-[67%] before:top-1/2 before:z-0 before:h-px before:bg-[rgba(95,251,241,0.55)] after:absolute after:left-[67%] after:right-0 after:top-1/2 after:z-0 after:h-px after:bg-[rgba(95,251,241,0.55)] sm:text-[21px] sm:tracking-[0.06em] lg:text-[15px]">
+        <span className="relative z-10 block text-[15px] px-2 text-[#d8f5ff] sm:inline sm:px-3">
           1 WTE = 0.25 USDT
         </span>
       </div>
 
-      <div className="mb-4 grid grid-cols-2 gap-2.5">
-        <button
-          type="button"
-          className={`${toggleBase} ${payWith === 'bnb' ? toggleOn : toggleOff}`}
-          onClick={() => setPayWith('bnb')}
-        >
-          BNB
-        </button>
-        <button
-          type="button"
-          className={`${toggleBase} ${payWith === 'usdt' ? toggleOn : toggleOff}`}
-          onClick={() => setPayWith('usdt')}
-        >
-          USDT
-        </button>
-      </div>
+  <div className="mb-4 grid grid-cols-2 gap-2.5">
+  <button
+    type="button"
+    onClick={() => setPayWith('eth')}
+    className={`cursor-pointer flex justify-center items-center gap-3 ${toggleBase} ${payWith === 'eth' ? toggleOn : toggleOff}`}
+  >
+    <RiBnbFill className="w-[16px] h-[16px]" />
+    <span className="text-[15px]">BNB</span>
+  </button>
+
+  
+  <button
+    type="button"
+    onClick={() => setPayWith('usdt')}
+    className={`flex justify-center items-center gap-3 ${toggleBase} ${payWith === 'usdt' ? toggleOn : toggleOff}`}
+  >
+  <img
+  src={usdt}
+  alt="USDT"
+  className={`w-[16px] h-[16px] rounded-full p-[2px] 
+    ${payWith === 'usdt' ? 'bg-black' : ''}`}/>
+    <span className="text-[15px]">USDT</span>
+  </button> 
+
+</div>
 
       <div className="mb-6">
         <div className="mb-2 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
           <span className="font-inter text-[11px] text-[rgba(244,254,255,0.75)]">
-            {payWith === 'bnb' ? 'Enter BNB Amount' : 'Enter USDT Amount'}
+            {payWith === 'eth' ? 'Enter BNB Amount' : 'Enter USDT Amount'}
           </span>
           <span />
           <span className="font-inter text-[11px] text-[rgba(244,254,255,0.75)]">WTE You Receive</span>
@@ -90,7 +103,7 @@ export function PrivateSaleCard() {
               onChange={(e) => setBnbAmount(e.target.value)}
               inputMode="decimal"
             />
-            <span className="font-twobit-only pl-2 text-[12px] text-[#f4feff]">{payWith === 'bnb' ? 'BNB' : 'USDT'}</span>
+            <span className="font-twobit-only pl-2 text-[12px] text-[#f4feff]">{payWith === 'eth' ? 'BNB' : 'USDT'}</span>
           </div>
 
           <button
@@ -117,7 +130,7 @@ export function PrivateSaleCard() {
         </div>
       </div>
 
-      <button
+    <button
         type="button"
         className={`${btnPrimary} font-inter mb-5 h-12 w-full rounded-[5px] py-0 text-[14px]`}
       >
@@ -132,12 +145,10 @@ export function PrivateSaleCard() {
           <input
             className="font-inter min-w-0 h-10 flex-1 rounded-[5px] border border-[rgba(242,242,254,0.15)] bg-[rgba(26,30,39,0.9)] px-3 text-[12px] text-[rgba(244,254,255,0.9)] backdrop-blur-[2px]"
             readOnly
-            value={referral}
           />
           <button
             type="button"
             className={`${btnPrimary} h-10 shrink-0 rounded-[5px] px-5 py-0 text-[13px] font-medium`}
-            onClick={copyReferral}
           >
             Copy
           </button>

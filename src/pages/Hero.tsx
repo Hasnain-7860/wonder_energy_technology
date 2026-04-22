@@ -2,6 +2,7 @@ import backgroundArt from '../assets/background.png'
 import { CountdownUnit } from '../components/CountdownBox'
 import { PageBackground } from '../components/PageBackground'
 import { PrivateSaleCard } from '../components/PrivateSaleCard'
+import { btnPrimary } from '../constants/buttonClasses'
 
 const COUNTDOWN = {
   days: '22',
@@ -34,8 +35,8 @@ export function Hero() {
           revolution, ride the innovation wave with WTE.
         </p>
 
-        <div className="mb-8 font-twobit-only flex flex-wrap items-start gap-2.5 sm:mb-10 lg:mb-12">
-          <a className="" href="#services">
+        <div className="mb-8 font-twobit-only flex flex-wrap items-start gap-2.5 sm:mb-10 lg:mb-12 gap-10">
+          <a className={`${btnPrimary} px-5 py-[10px] text-[14px] sm:px-[22px] sm:text-[15px]" href="#services`}>
             Our Service
           </a>
           <a className="btn-hero-ghost" href="#documents">
@@ -44,15 +45,15 @@ export function Hero() {
         </div>
 
         <div>
-          <p className="font-countdown-heading font-twobit-only mb-5 text-left !text-[17px] !leading-[22px] !tracking-[0.08em] sm:!text-[19px] sm:!leading-[23px] sm:!tracking-[0.1em] lg:mb-6 lg:!text-[21.33px] lg:!leading-6 lg:!tracking-[0.1em]">
+          <p className="font-countdown-heading font-twobit-only mt-[120px] text-left !text-[17px] !leading-[22px] !tracking-[0.08em] sm:!text-[19px] sm:!leading-[23px] sm:!tracking-[0.1em] lg:mb-6 lg:!text-[21.33px] lg:!leading-6 lg:!tracking-[0.1em]">
             Token sale ends in:
           </p>
-          <div className="flex max-w-[min(560px,100%)] flex-nowrap items-end gap-3 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-4 [&::-webkit-scrollbar]:hidden">
-            <CountdownUnit label="Days" value={COUNTDOWN.days} />
-            <CountdownUnit label="Hours" value={COUNTDOWN.hours} />
-            <CountdownUnit label="Minutes" value={COUNTDOWN.minutes} />
-            <CountdownUnit label="Seconds" value={COUNTDOWN.seconds} />
-          </div>
+          <div className="flex max-w-[min(560px,100%)] font-neue flex-nowrap items-end gap-3 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-4 [&::-webkit-scrollbar]:hidden">
+  <CountdownUnit label="Days" value={COUNTDOWN?.days ?? 0} />
+  <CountdownUnit label="Hours" value={COUNTDOWN?.hours ?? 0} />
+  <CountdownUnit label="Minutes" value={COUNTDOWN?.minutes ?? 0} />
+  <CountdownUnit label="Seconds" value={COUNTDOWN?.seconds ?? 0} />
+</div>
         </div>
       </section>
 

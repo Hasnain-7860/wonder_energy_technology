@@ -27,6 +27,14 @@
   font-style: italic;
   font-weight: 700;
 }
+@font-face {
+  font-family: "NeueMachina";
+  src: url("/fonts/neue-machina/NeueMachina-Regular.otf") format("opentype");
+}
+
+.font-neue {
+  font-family: "NeueMachina", sans-serif;
+}
 
 
 
@@ -140,7 +148,6 @@
 
 .font-countdown-heading {
   font-family: var(--font-dm-sans);
-  font-style: italic;
   font-weight: 400;
   font-size: 21.33px;
   line-height: 24px;
