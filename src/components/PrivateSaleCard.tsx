@@ -3,6 +3,7 @@ import { btnPrimary } from '../constants/buttonClasses'
 import Logo from '../assets/logo.png'
 import usdt from '../assets/usdt.svg'
 import { RiBnbFill } from "react-icons/ri";
+import { toast } from 'react-toastify';
 
 import { useWeb3 } from './Web3Context';
 import { buyWithETH, buyWithUSDT } from "../../utils/web3";
@@ -24,7 +25,7 @@ const [payWith, setPayWith] = useState<'eth' | 'usdt'>('eth')
 async function handleBuy() {
   try {
     if (!bnbAmount || Number(bnbAmount) <= 0) {
-      alert("Enter valid amount");
+      toast.error("Enter valid amount");
       return;
     }
 
@@ -34,10 +35,10 @@ async function handleBuy() {
       await buyWithUSDT(bnbAmount);
     }
 
-    alert("✅ Purchase successful");
+    toast.success("Purchase successful");
   } catch (err) {
     console.error(err);
-    alert("❌ Transaction failed");
+    toast.error("Transaction failed");
   }
 }
 const calculateWTE = () => {

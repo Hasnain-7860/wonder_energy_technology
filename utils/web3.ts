@@ -5,7 +5,10 @@ import abi from "../Abi.json";
 const PRESALE_ADDRESS = "0x7e46004e9847A874Bfb70a00a70842BBBE0C5E2a";
 
 
-const provider = new ethers.JsonRpcProvider("https://rpc.sepolia.org");
+// const provider = new ethers.JsonRpcProvider("https://rpc.sepolia.org");
+const provider = new ethers.JsonRpcProvider(
+  "https://arbitrum-sepolia.infura.io/v3/3e311979d31d4f2cb416a2581eb0bb68"
+);
 
 
 export const readContract = new ethers.Contract(
