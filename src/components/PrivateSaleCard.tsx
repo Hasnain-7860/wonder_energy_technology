@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { btnPrimary } from '../constants/buttonClasses'
 import Logo from '../assets/logo.png'
 import usdt from '../assets/usdt.svg'
@@ -27,7 +27,14 @@ type Props = {
 };
 
 export function PrivateSaleCard({ timeLeft }: Props) {
-  const { isConnected, loginHandler} = useWeb3();
+ 
+
+
+ const { isConnected, loginHandler, account } = useWeb3();
+
+const referralLink = account
+  ? `${window.location.origin}?ref=${account}`
+  : "";
 
 const [payWith, setPayWith] = useState<'eth' | 'usdt'>('eth')
   const [bnbAmount, setBnbAmount] = useState('0.0')
@@ -199,23 +206,31 @@ const calculateWTE = () => {
     ? "Buy Now"
     : "Connect Wallet"}
 </button>
-      <div className="flex flex-col gap-1.5">
-        <span className="font-inter text-[11px] text-[rgba(244,254,255,0.82)]">
-          Share your Referral link
-        </span>
-        <div className="flex gap-1.5">
-          <input
-            className="font-inter min-w-0 h-10 flex-1 rounded-[5px] border border-[rgba(242,242,254,0.15)] bg-[rgba(26,30,39,0.9)] px-3 text-[12px] text-[rgba(244,254,255,0.9)] backdrop-blur-[2px]"
-            readOnly
-          />
-          <button
-            type="button"
-            className={`${btnPrimary} h-10 shrink-0 rounded-[5px] px-5 py-0 text-[13px] font-medium`}
-          >
-            Copy
-          </button>
-        </div>
-      </div>
+     <div className="flex flex-col gap-1.5">
+  <span className="font-inter text-[11px] text-[rgba(244,254,255,0.82)]">
+    Share your Referral link
+  </span>
+
+  <div className="flex gap-1.5">
+    <input
+      className="font-inter min-w-0 h-10 flex-1 rounded-[5px] border border-[rgba(242,242,254,0.15)] bg-[rgba(26,30,39,0.9)] px-3 text-[12px] text-[rgba(244,254,255,0.9)]"
+      readOnly
+      value={referralLink}
+    />
+
+    <button
+      type="button"
+      className={`${btnPrimary} h-10 shrink-0 rounded-[5px] px-5 py-0 text-[13px] font-medium`}
+      onClick={() => {
+        if (!referralLink) return;
+        navigator.clipboard.writeText(referralLink);
+        toast.success("Copied!");
+      }}
+    >
+      Copy
+    </button>
+  </div>
+</div>
     </aside>
   )
 }
