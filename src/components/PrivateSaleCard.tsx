@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { btnPrimary } from '../constants/buttonClasses'
 import Logo from '../assets/logo.png'
 import usdt from '../assets/usdt.svg'
