@@ -176,7 +176,6 @@ const calculateWTE = () => {
 <button className={`${btnPrimary} font-inter mb-5 h-12 w-full rounded-[5px] py-0 text-[14px]`} onClick={isConnected ? handleBuy : loginHandler}>
   {isConnected ? "Buy Now" : "Connect Wallet"}
 </button>
-
       <div className="flex flex-col gap-1.5">
         <span className="font-inter text-[11px] text-[rgba(244,254,255,0.82)]">
           Share your Referral link
