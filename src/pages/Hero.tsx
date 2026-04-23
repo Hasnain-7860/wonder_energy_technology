@@ -1,17 +1,54 @@
+  import { useEffect, useState } from "react";
 import backgroundArt from '../assets/background.png'
 import { CountdownUnit } from '../components/CountdownBox'
 import { PageBackground } from '../components/PageBackground'
 import { PrivateSaleCard } from '../components/PrivateSaleCard'
 import { btnPrimary } from '../constants/buttonClasses'
 
-const COUNTDOWN = {
-  days: '22',
-  hours: '15',
-  minutes: '19',
-  seconds: '01',
-} as const
+// const COUNTDOWN = {
+//   days: '22',
+//   hours: '15',
+//   minutes: '19',
+//   seconds: '01',
+// } as const
 
 export function Hero() {
+
+
+const TARGET_DATE = new Date("2026-04-25T23:59:59").getTime();
+const [timeLeft, setTimeLeft] = useState(getTimeLeft());
+
+
+
+function getTimeLeft() {
+  const now = new Date().getTime();
+  const difference = TARGET_DATE - now;
+
+  if (difference <= 0) {
+    return {
+      days: "00",
+      hours: "00",
+      minutes: "00",
+      seconds: "00",
+      isEnded: true,
+    };
+  }
+
+  return {
+    days: String(Math.floor(difference / (1000 * 60 * 60 * 24))),
+    hours: String(Math.floor((difference / (1000 * 60 * 60)) % 24)),
+    minutes: String(Math.floor((difference / 1000 / 60) % 60)),
+    seconds: String(Math.floor((difference / 1000) % 60)),
+    isEnded: false,
+  };
+}
+useEffect(() => {
+  const timer = setInterval(() => {
+    setTimeLeft(getTimeLeft());
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, []);
   return (
     
     <div
@@ -49,15 +86,15 @@ export function Hero() {
             Token sale ends in:
           </p>
           <div className="flex max-w-[min(560px,100%)] font-neue flex-nowrap items-end gap-3 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-4 [&::-webkit-scrollbar]:hidden">
-  <CountdownUnit label="Days" value={COUNTDOWN?.days ?? 0} />
-  <CountdownUnit label="Hours" value={COUNTDOWN?.hours ?? 0} />
-  <CountdownUnit label="Minutes" value={COUNTDOWN?.minutes ?? 0} />
-  <CountdownUnit label="Seconds" value={COUNTDOWN?.seconds ?? 0} />
+ <CountdownUnit label="Days" value={timeLeft.days} />
+<CountdownUnit label="Hours" value={timeLeft.hours} />
+<CountdownUnit label="Minutes" value={timeLeft.minutes} />
+<CountdownUnit label="Seconds" value={timeLeft.seconds} />
 </div>
         </div>
       </section>
 
-      <PrivateSaleCard />
+      <PrivateSaleCard timeLeft={timeLeft} />
     </div>
   )
 }

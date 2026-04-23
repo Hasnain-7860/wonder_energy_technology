@@ -59,34 +59,34 @@ export const Web3Provider = ({ children }: any) => {
     }
   };
 
-  // useEffect(() => {
-  //   const checkWalletConnection = async () => {
-  //     try {
-  //       if (!window.ethereum) return;
+  useEffect(() => {
+    const checkWalletConnection = async () => {
+      try {
+        if (!window.ethereum) return;
 
-  //       const isPreviouslyConnected = localStorage.getItem("walletConnected");
-  //       if (!isPreviouslyConnected) return; 
+        const isPreviouslyConnected = localStorage.getItem("walletConnected");
+        if (!isPreviouslyConnected) return; 
 
-  //       const browserProvider = new BrowserProvider(window.ethereum);
-  //       const accounts = await browserProvider.send("eth_accounts", []);
+        const browserProvider = new BrowserProvider(window.ethereum);
+        const accounts = await browserProvider.send("eth_accounts", []);
 
-  //       if (accounts.length > 0) {
-  //         const signerInstance = await browserProvider.getSigner();
+        if (accounts.length > 0) {
+          const signerInstance = await browserProvider.getSigner();
 
-  //         setProvider(browserProvider);
-  //         setSigner(signerInstance);
-  //         setAccount(accounts[0]);
-  //         setIsConnected(true);
+          setProvider(browserProvider);
+          setSigner(signerInstance);
+          setAccount(accounts[0]);
+          setIsConnected(true);
 
-  //         console.log("Auto reconnected:", accounts[0]);
-  //       }
-  //     } catch (err) {
-  //       console.error("Auto connect failed:", err);
-  //     }
-  //   };
+          console.log("Auto reconnected:", accounts[0]);
+        }
+      } catch (err) {
+        console.error("Auto connect failed:", err);
+      }
+    };
 
-  //   checkWalletConnection();
-  // }, []);
+    checkWalletConnection();
+  }, []);
   const  logout =async ()  => {
     setProvider(null);
     setSigner(null);

@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { btnPrimary } from '../constants/buttonClasses'
 import Logo from '../assets/logo.png'
 import usdt from '../assets/usdt.svg'
-import { RiBnbFill } from "react-icons/ri";
+import { FaEthereum } from "react-icons/fa";
 import { toast } from 'react-toastify';
 
 import { useWeb3 } from './Web3Context';
-import { buyWithETH, buyWithUSDT } from "../../utils/web3";
+import { approveUSDT, buyWithETH, buyWithUSDT } from "../../utils/web3";
+
 
 
 declare global {
@@ -15,15 +16,29 @@ declare global {
   }
 }
 
-export function PrivateSaleCard() {
-  const { isConnected, loginHandler, logout } = useWeb3();
+type Props = {
+  timeLeft: {
+    days: string;
+    hours: string;
+    minutes: string;
+    seconds: string;
+    isEnded: boolean;
+  };
+};
+
+export function PrivateSaleCard({ timeLeft }: Props) {
+  const { isConnected, loginHandler} = useWeb3();
 
 const [payWith, setPayWith] = useState<'eth' | 'usdt'>('eth')
   const [bnbAmount, setBnbAmount] = useState('0.0')
-  
+
 
 async function handleBuy() {
   try {
+    if (timeLeft.isEnded) {
+      toast.error("Sale has ended");
+      return;
+    }
     if (!bnbAmount || Number(bnbAmount) <= 0) {
       toast.error("Enter valid amount");
       return;
@@ -32,13 +47,14 @@ async function handleBuy() {
     if (payWith === "eth") {
       await buyWithETH(bnbAmount);
     } else {
+      await approveUSDT(bnbAmount);
       await buyWithUSDT(bnbAmount);
     }
 
     toast.success("Purchase successful");
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
-    toast.error("Transaction failed");
+    toast.error(err?.reason || "Transaction failed");
   }
 }
 const calculateWTE = () => {
@@ -93,7 +109,7 @@ const calculateWTE = () => {
 
       <div className="font-crypto relative mb-6 px-2 text-center text-[16px] tracking-[0.05em] before:absolute before:left-0 before:right-[67%] before:top-1/2 before:z-0 before:h-px before:bg-[rgba(95,251,241,0.55)] after:absolute after:left-[67%] after:right-0 after:top-1/2 after:z-0 after:h-px after:bg-[rgba(95,251,241,0.55)] sm:text-[21px] sm:tracking-[0.06em] lg:text-[15px]">
         <span className="relative z-10 block text-[15px] px-2 text-[#d8f5ff] sm:inline sm:px-3">
-          1 WTE = 0.25 USDT
+          1 WTE = 0.20 USDT
         </span>
       </div>
 
@@ -103,8 +119,8 @@ const calculateWTE = () => {
     onClick={() => setPayWith('eth')}
     className={`cursor-pointer flex justify-center items-center gap-3 ${toggleBase} ${payWith === 'eth' ? toggleOn : toggleOff}`}
   >
-    <RiBnbFill className="w-[16px] h-[16px]" />
-    <span className="text-[15px]">BNB</span>
+    <FaEthereum className="w-[16px] h-[16px]" />
+    <span className="text-[15px]">ETH</span>
   </button>
 
   
@@ -126,7 +142,7 @@ const calculateWTE = () => {
       <div className="mb-6">
         <div className="mb-2 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
           <span className="font-inter text-[11px] text-[rgba(244,254,255,0.75)]">
-            {payWith === 'eth' ? 'Enter BNB Amount' : 'Enter USDT Amount'}
+            {payWith === 'eth' ? 'Enter ETH Amount' : 'Enter USDT Amount'}
           </span>
           <span />
           <span className="font-inter text-[11px] text-[rgba(244,254,255,0.75)]">WTE You Receive</span>
@@ -134,13 +150,14 @@ const calculateWTE = () => {
 
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
           <div className="flex h-11 items-center rounded-[5px] bg-[rgba(26,30,39,0.9)] px-2">
-            <input
-              className="font-inter w-full border-0 bg-transparent text-[15px] text-[#f4feff] outline-none"
-              value={bnbAmount}
-              onChange={(e) => setBnbAmount(e.target.value)}
-              inputMode="decimal"
-            />
-            <span className="font-twobit-only pl-2 text-[12px] text-[#f4feff]">{payWith === 'eth' ? 'BNB' : 'USDT'}</span>
+           <input
+  className="font-inter w-full border-0 bg-transparent text-[15px] text-[#f4feff] outline-none"
+  value={bnbAmount}
+  onChange={(e) => setBnbAmount(e.target.value.replace(/[^0-9.]/g, ""))}
+  inputMode="decimal"
+  placeholder={payWith === 'eth' ? "0.0 ETH" : "0.0 USDT"}
+/>
+            <span className="font-twobit-only pl-2 text-[12px] text-[#f4feff]">{payWith === 'eth' ? 'ETH' : 'USDT'}</span>
           </div>
 
           <button
@@ -167,15 +184,20 @@ const calculateWTE = () => {
         </div>
       </div>
     
-{isConnected && (
-  <button     className="absolute top-4 right-4 text-[10px] px-2 py-1 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30"
- onClick={logout}>
-    Disconnect
-  </button>
-)}
 
-<button className={`${btnPrimary} font-inter mb-5 h-12 w-full rounded-[5px] py-0 text-[14px]`} onClick={isConnected ? handleBuy : loginHandler}>
-  {isConnected ? "Buy Now" : "Connect Wallet"}
+<button
+  disabled={isConnected && timeLeft.isEnded}
+  className={`${btnPrimary} font-inter mb-5 h-12 w-full rounded-[5px] py-0 text-[14px] 
+    ${isConnected && timeLeft.isEnded ? "opacity-50 cursor-not-allowed" : ""}`}
+  onClick={isConnected ? handleBuy : loginHandler}
+>
+  {timeLeft.isEnded
+    ? isConnected
+      ? "Sale Ended"
+      : "Connect Wallet"
+    : isConnected
+    ? "Buy Now"
+    : "Connect Wallet"}
 </button>
       <div className="flex flex-col gap-1.5">
         <span className="font-inter text-[11px] text-[rgba(244,254,255,0.82)]">
