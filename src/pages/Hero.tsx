@@ -1,7 +1,5 @@
   import { useEffect, useState } from "react";
-import backgroundArt from '../assets/background.png'
 import { CountdownUnit } from '../components/CountdownBox'
-import { PageBackground } from '../components/PageBackground'
 import { PrivateSaleCard } from '../components/PrivateSaleCard'
 import { btnPrimary } from '../constants/buttonClasses'
 
@@ -55,10 +53,6 @@ useEffect(() => {
       id="home"
       className="relative isolate w-full min-h-0 overflow-x-clip overflow-y-visible pb-8 sm:min-h-[560px] sm:pb-10 lg:min-h-[min(100svh,780px)] lg:overflow-hidden lg:pb-10 xl:min-h-[calc(671px+3rem)]"
     >
-      
-      <PageBackground textureUrl={backgroundArt} scope="section" />
-    
-      
       <section className="relative z-[1] w-full max-w-full pt-1 lg:max-w-none lg:pr-[min(537px+1.5rem,calc(100%-1rem))] xl:pr-[calc(537px+2rem)]">
         <h1
           className="font-hero-title font-crypto font-twobit-only mb-4 max-w-[min(720px,100%)]  !text-[clamp(1.5rem,5.5vw,3rem)] !leading-[1.15] !tracking-[0.12em] sm:mb-5 sm:!text-[clamp(1.85rem,4vw,2.85rem)] sm:!leading-[1.18] sm:!tracking-[0.16em] lg:!text-[48px] lg:!leading-[57px] lg:!tracking-[0.2em]"
