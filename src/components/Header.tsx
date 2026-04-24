@@ -148,26 +148,9 @@ export function Header() {
   <span className="font-twobit-only text-[13px] tracking-[0.12em] text-white/80">
     Menu
   </span>
-  {isConnected && (
-  <button     className="absolute top-4 right-4 text-[10px] px-2 py-1 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30"
- onClick={logout}>
-    Disconnect
-  </button>
-)}
+
 
   <div className="flex items-center gap-2">
-    {isConnected && (
-      <button
-        onClick={logout}
-        className="flex items-center justify-center 
-        w-8 h-8 rounded-full 
-        bg-red-500/10 text-red-400 
-        hover:bg-red-500/20 transition"
-      >
-        <FiPower className="w-4 h-4" />
-      </button>
-    )}
-
     <button
       type="button"
       className="inline-flex h-10 w-10 items-center justify-center rounded-md text-white/90 hover:bg-white/5"
@@ -203,20 +186,7 @@ export function Header() {
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
 
-  {isConnected && (
-    <button
-      onClick={logout}
-      className="flex items-center justify-center 
-      w-9 h-9 sm:w-10 sm:h-10 
-      rounded-full 
-      bg-red-500/10 text-red-400 
-      hover:bg-red-500/20 hover:scale-110 
-      transition-all duration-200"
-      title="Disconnect Wallet"
-    >
-      <FiPower className="w-4 h-4 sm:w-5 sm:h-5" />
-    </button>
-  )}
+
 
   <div className="hidden lg:flex">
     <a
@@ -228,14 +198,6 @@ export function Header() {
       Telegram
     </a>
   </div>
-
-  <button
-    type="button"
-    className="inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-lg border border-[rgba(95,251,241,0.25)] bg-[rgba(5,18,20,0.65)] text-white backdrop-blur-sm hover:border-[rgba(95,251,241,0.45)] hover:bg-[rgba(5,18,20,0.85)] lg:hidden"
-    onClick={() => setMenuOpen((v) => !v)}
-  >
-    <MenuIcon open={menuOpen} />
-  </button>
 
 </div>
         </div>
